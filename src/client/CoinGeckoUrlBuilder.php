@@ -50,14 +50,9 @@ class CoinGeckoUrlBuilder
     "query" => "query",
     "coinid" => "coin_id",
   ];
-  /**
-   * @param array $parameterList
-   * @param string $endpoint
-   */
-  public function __construct(
-    array $parameterList = [],
-    string $endpoint = ""
-  ) {
+
+  public function __construct(array $parameterList = [], string $endpoint = "")
+  {
     $this->parameterList = $parameterList;
     $this->endpoint = $endpoint;
   }
@@ -100,7 +95,7 @@ class CoinGeckoUrlBuilder
     return new CoinGeckoUrlBuilder([], "");
   }
 
-  private function isApiKeyParamExist(): bool
+  public function apiKeyParamExist(): bool
   {
     $pair = $this->buildKeyValuePair();
     return (count($pair) > 0) ?

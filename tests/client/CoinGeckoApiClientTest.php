@@ -436,11 +436,11 @@ class CoinGeckoApiClientTest extends TestCase
       $apiClient->set()->global()->decentralizedFinanceDefi()->send(),
       $apiClient->set()->companies()->publicTreasury("PARAM")->send(),
       //PRO Version
-      $apiClient->set()->nfts()->markets()->send(),
-      $apiClient->set()->nfts("PARAM")->marketchart()->send(),
-      $apiClient->set()->nfts("PARAM")->contract("PARAM")->marketchart()->send(),
-      $apiClient->set()->nfts("PARAM")->tickers()->send(),
-      $apiClient->set()->global()->marketcapchart()->send(),
+      $apiClient->set()->nfts()->markets()->sendPro($urlBuilder->withXcGProApiKey("API_KEY")),
+      $apiClient->set()->nfts("PARAM")->marketchart()->sendPro($urlBuilder->withXcGProApiKey("API_KEY")),
+      $apiClient->set()->nfts("PARAM")->contract("PARAM")->marketchart()->sendPro($urlBuilder->withXcGProApiKey("API_KEY")),
+      $apiClient->set()->nfts("PARAM")->tickers()->sendPro($urlBuilder->withXcGProApiKey("API_KEY")),
+      $apiClient->set()->global()->marketcapchart()->sendPro($urlBuilder->withXcGProApiKey("API_KEY")),
     ];
 
     foreach($endpointResponse as $currentEndpointResponse) {

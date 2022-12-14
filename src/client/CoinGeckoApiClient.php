@@ -133,20 +133,20 @@ class CoinGeckoApiClient
       );
     }
 
-    if($isProVersion && !is_null($urlBuilder)) {
-      if(!$urlBuilder->isApiKeyParamExist()) {
+    $baseUrl = self::COINGECKO_BASE_URL;
+    if($isProVersion) {
+      if(is_null($urlBuilder) || !$urlBuilder->apiKeyParamExist()) {
         throw new \ParseError (
           "[ERROR:-3] It appears you want to use the pro version of the CoinGecko API. " .
           "\nIf you believe this is correct, please set the API Key to proceed, ".
-          "\notherwise use the community API by using the send() method instead of sendPro()." .
-          $this->endpoint,
-          -2
+          "\notherwise use the community API by using the send() method instead of sendPro().".
+          "\nENDPOINT : [ ". $this->endpoint ."]",
+          -3
         );
       }
       $baseUrl = self::COINGECKO_BASE_URL_PRO;
     }
 
-    $baseUrl = self::COINGECKO_BASE_URL;
     $endpoint = $this->getApiEndpoint();
     $url = $baseUrl. $endpoint;
     $this->apiClient = $this->apiClient->setUrl($url);
