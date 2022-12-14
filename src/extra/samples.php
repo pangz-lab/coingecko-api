@@ -1,11 +1,11 @@
 <?php
 require __DIR__ . './../../vendor/autoload.php';
 
-use PangzLab\CoinGecko\Client\ApiUrlBuilder;
+use PangzLab\CoinGecko\Client\CoinGeckoUrlBuilder;
 use PangzLab\CoinGecko\Client\CoinGeckoApiClient;
 use GuzzleHttp\Exception\RequestException;
 
-$apiQuery = new ApiUrlBuilder();
+$apiQuery = new CoinGeckoUrlBuilder();
 $apiClient= new CoinGeckoApiClient();
 try {
   $response = $apiClient->get()->ping()->send();
@@ -19,9 +19,10 @@ try {
       $apiQuery
         ->withIds("verus-coin")
         ->withVsCurrencies("btc")
-        ->withIncludeMarketCap(true)
+        ->withIncludeMarketCap("true")
     );
   print_r($response);
+
 } catch (\ParseError $e) {
   print("Invalid Command");
 } catch (\RequestException $e) {

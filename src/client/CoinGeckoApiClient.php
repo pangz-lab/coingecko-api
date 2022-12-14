@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace PangzLab\CoinGecko\Client;
 use PangzLab\CoinGecko\Client\ApiClient;
-use PangzLab\CoinGecko\Client\ApiUrlBuilder;
+use PangzLab\CoinGecko\Client\CoinGeckoUrlBuilder;
 use ParseError;
 
 class CoinGeckoApiClient
@@ -12,6 +12,8 @@ class CoinGeckoApiClient
   private $endpoint = "";
   private $endpointKey = "";
   private $endpointParams = [];
+  const COINGECKO_BASE_URL = "https://api.coingecko.com/api/v3";
+  const COINGECKO_BASE_URL_PRO = "https://pro-api.coingecko.com/api/v3";
   const API_ENPOINTS_MAP = [
     "/ping" => "/ping",
     "/simple/price" => "/simple/price",
@@ -92,7 +94,7 @@ class CoinGeckoApiClient
     return $this->endpointKey;
   }
 
-  public function send(ApiUrlBuilder $urlBuilder = null): array
+  public function send(CoinGeckoUrlBuilder $urlBuilder = null): array
   {
     if(empty($this->endpoint)) {
       throw new \ParseError (
@@ -109,12 +111,18 @@ class CoinGeckoApiClient
         -2
       );
     }
+    $endpoint = $this->getApiEndpoint();
 
-    $this->apiClient = $this->apiClient->setUrl($this->getApiEndpoint());
+    $this->apiClient = $this->apiClient->setUrl(
+      self::COINGECKO_BASE_URL . $endpoint
+    );
+
     if(!is_null($urlBuilder)) {
-      $this->apiClient = $this->apiClient->setUrlBuilder($urlBuilder);
+      $this->apiClient = $this->apiClient->setUrl(
+        self::COINGECKO_BASE_URL . $endpoint . $urlBuilder->build()
+      );
     }
-
+    print_r($this->apiClient->getUrl());
     return $this->apiClient->send();
   }
 

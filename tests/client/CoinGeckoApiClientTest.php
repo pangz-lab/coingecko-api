@@ -8,7 +8,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Client;
 use PangzLab\CoinGecko\Client\ApiClient;
-use PangzLab\CoinGecko\Client\ApiUrlBuilder;
+use PangzLab\CoinGecko\Client\CoinGeckoUrlBuilder;
 use PangzLab\CoinGecko\Client\CoinGeckoApiClient;
 use GuzzleHttp\Exception\RequestException;
 
@@ -248,7 +248,7 @@ class CoinGeckoApiClientTest extends TestCase
     ]);
     $handlerStack = HandlerStack::create($mock);
     $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
-    $urlBuilder = new ApiUrlBuilder();
+    $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
     $response = $apiClient
@@ -273,7 +273,7 @@ class CoinGeckoApiClientTest extends TestCase
 
   public function testCanHandleParseError(): void
   {
-    $urlBuilder = new ApiUrlBuilder();
+    $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient();
     try {
       $response = $apiClient
@@ -298,7 +298,7 @@ class CoinGeckoApiClientTest extends TestCase
     $handlerStack = HandlerStack::create($mock);
     $httpClient = new Client(['handler' => $handlerStack]);
     $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
-    $urlBuilder = new ApiUrlBuilder();
+    $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
     try {
@@ -341,7 +341,7 @@ class CoinGeckoApiClientTest extends TestCase
     ]);
     $handlerStack = HandlerStack::create($mock);
     $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
-    $urlBuilder = new ApiUrlBuilder();
+    $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
     try {
@@ -371,7 +371,7 @@ class CoinGeckoApiClientTest extends TestCase
     ]);
     $handlerStack = HandlerStack::create($mock);
     $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
-    $urlBuilder = new ApiUrlBuilder();
+    $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
     $request = $apiClient->get()->ping();
@@ -392,7 +392,7 @@ class CoinGeckoApiClientTest extends TestCase
 
     $handlerStack = HandlerStack::create($mock);
     $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
-    $urlBuilder = new ApiUrlBuilder();
+    $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
     $endpointResponse = [
@@ -451,7 +451,7 @@ class CoinGeckoApiClientTest extends TestCase
 
     $handlerStack = HandlerStack::create($mock);
     $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
-    $urlBuilder = new ApiUrlBuilder();
+    $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
     $endpointRequest = [
       $apiClient->get()->ping(),

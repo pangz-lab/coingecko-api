@@ -2,7 +2,7 @@
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 use PangzLab\CoinGecko\Client\ApiClient;
-use PangzLab\CoinGecko\Client\ApiUrlBuilder;
+use PangzLab\CoinGecko\Client\CoinGeckoUrlBuilder;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -16,17 +16,17 @@ final class ApiClientTest extends TestCase
   
   public function testCanGetTheURL(): void
   {
-    $urlBuilder = new ApiUrlBuilder([], "/coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
     $client = new ApiClient($urlBuilder->build());
     $this->assertEquals(
       $client->getUrl(),
-      self::API_BASE_URL . "v3/coins/verus-coin/market_chart"
+      "/coins/verus-coin/market_chart"
     );
   }
 
   public function testCanBuildURL(): void
   {
-    $urlBuilder = new ApiUrlBuilder([], "/coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
     $client = new ApiClient();
     $client = $client
       ->setUrlBuilder(
@@ -37,23 +37,23 @@ final class ApiClientTest extends TestCase
 
     $this->assertEquals(
       $client->getUrl(),
-      self::API_BASE_URL . "v3/coins/verus-coin/market_chart?days=7&vs_currency=jpy"
+      "/coins/verus-coin/market_chart?days=7&vs_currency=jpy"
     );
   }
 
   public function testCanBuildUrlWithoutParameters(): void
   {
-    $urlBuilder = new ApiUrlBuilder([], "/coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
     $client = new ApiClient($urlBuilder->build());
     $this->assertEquals(
       $client->getUrl(),
-      self::API_BASE_URL . "v3/coins/verus-coin/market_chart"
+      "/coins/verus-coin/market_chart"
     );
   }
 
   public function testCanBuildURLWithCustomEndpoint(): void
   {
-    $urlBuilder = new ApiUrlBuilder([], "/coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
     $client = new ApiClient($urlBuilder->build());
     $client = $client
       ->setUrlBuilder(
@@ -64,10 +64,10 @@ final class ApiClientTest extends TestCase
 
     $this->assertEquals(
       $client->getUrl(),
-      self::API_BASE_URL . "v3/coins/verus-coin/market_chart?days=7&vs_currency=jpy"
+      "/coins/verus-coin/market_chart?days=7&vs_currency=jpy"
     );
 
-    $urlBuilder = new ApiUrlBuilder([["days","9999"],["vs_currency","usd"]], "/coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([["days","9999"],["vs_currency","usd"]], "/coins/verus-coin/market_chart");
     $client = new ApiClient($urlBuilder->build());
     $client = $client
       ->setUrlBuilder(
@@ -78,7 +78,7 @@ final class ApiClientTest extends TestCase
 
     $this->assertEquals(
       $client->getUrl(),
-      self::API_BASE_URL . "v3/coins/verus-coin/market_chart?days=7&vs_currency=jpy"
+      "/coins/verus-coin/market_chart?days=7&vs_currency=jpy"
     );
   }
 
@@ -105,7 +105,7 @@ final class ApiClientTest extends TestCase
     $handlerStack = HandlerStack::create($mock);
     $httpClient = new Client(['handler' => $handlerStack]);
 
-    $urlBuilder = new ApiUrlBuilder([], "/coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
     $client = new ApiClient($urlBuilder->build(), $httpClient);
     $response = $client
       ->setUrlBuilder(
@@ -133,7 +133,7 @@ final class ApiClientTest extends TestCase
     $handlerStack = HandlerStack::create($mock);
     $httpClient = new Client(['handler' => $handlerStack]);
 
-    $urlBuilder = new ApiUrlBuilder([], "/coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
     $client = new ApiClient($urlBuilder->build(), $httpClient);
 
     try {
@@ -174,7 +174,7 @@ final class ApiClientTest extends TestCase
     $handlerStack = HandlerStack::create($mock);
     $httpClient = new Client(['handler' => $handlerStack]);
 
-    $urlBuilder = new ApiUrlBuilder([], "coins/verus-coin/market_chart");
+    $urlBuilder = new CoinGeckoUrlBuilder([], "coins/verus-coin/market_chart");
     $client = new ApiClient($urlBuilder->build(), $httpClient);
     $response = $client
       ->setUrlBuilder(

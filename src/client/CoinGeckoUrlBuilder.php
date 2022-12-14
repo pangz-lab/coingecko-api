@@ -4,13 +4,10 @@ declare(strict_types=1);
 namespace PangzLab\CoinGecko\Client;
 use ParseError;
 
-class ApiUrlBuilder
+class CoinGeckoUrlBuilder
 {
   private $parameterList = [];
   private $endpoint = "";
-  private $apiVersion = "v3";
-  const COINGECKO_BASE_URL = "https://api.coingecko.com/api";
-  const COINGECKO_BASE_URL_PRO = "https://pro-api.coingecko.com/api";
   const SETTER_PREFIX = 'with';
   const API_QUERY_PARAMS = [
     "id" => "id",
@@ -55,16 +52,13 @@ class ApiUrlBuilder
   /**
    * @param array $parameterList
    * @param string $endpoint
-   * @param string $apiVersion
    */
   public function __construct(
     array $parameterList = [],
-    string $endpoint = "",
-    string $apiVersion = "v3"
+    string $endpoint = ""
   ) {
     $this->parameterList = $parameterList;
     $this->endpoint = $endpoint;
-    $this->apiVersion = $apiVersion;
   }
 
   public function __call($name, $arguments)
@@ -77,16 +71,15 @@ class ApiUrlBuilder
 
     $paramElement = $this->getParameter($paramName);
     $this->parameterList[] = [$paramElement, $arguments[0]];
-    return new ApiUrlBuilder($this->parameterList, $this->endpoint, $this->apiVersion);
+    return new CoinGeckoUrlBuilder($this->parameterList, $this->endpoint);
   }
 
-  public function setEndpoint(string $endpoint = ""): ApiUrlBuilder
+  public function setEndpoint(string $endpoint = ""): CoinGeckoUrlBuilder
   {
     $endpoint = (empty(trim($endpoint))) ? $this->endpoint : $endpoint;
-    return new ApiUrlBuilder(
+    return new CoinGeckoUrlBuilder(
       $this->parameterList,
-      $endpoint,
-      $this->apiVersion
+      $endpoint
     );
   }
 
@@ -95,15 +88,12 @@ class ApiUrlBuilder
     $query = (!empty($this->parameterList)) ?
       '?' . $this->buildKeyValuePair() :
       '';
-    return self::COINGECKO_BASE_URL .  
-      '/' . $this->apiVersion .
-      $this->endpoint .
-      $query;
+    return $this->endpoint . $query;
   }
 
-  public function clean(): ApiUrlBuilder
+  public function clean(): CoinGeckoUrlBuilder
   {
-    return new ApiUrlBuilder([], "", $this->apiVersion);
+    return new CoinGeckoUrlBuilder([], "");
   }
 
   private function buildKeyValuePair(): string 
