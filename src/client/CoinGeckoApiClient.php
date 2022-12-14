@@ -1,0 +1,145 @@
+<?php
+declare(strict_types=1);
+
+namespace PangzLab\CoinGecko\Client;
+use PangzLab\CoinGecko\Client\ApiClient;
+use PangzLab\CoinGecko\Client\ApiUrlBuilder;
+use ParseError;
+
+class CoinGeckoApiClient
+{
+  private $apiClient;
+  private $endpoint = "";
+  private $endpointKey = "";
+  private $endpointParams = [];
+  const API_ENPOINTS_MAP = [
+    "/ping" => "/ping",
+    "/simple/price" => "/simple/price",
+    "/simple/tokenprice/%s" => "/simple/token_price/%s",
+    "/simple/supportedvscurrencies" => "/simple/supported_vs_currencies",
+    "/coins/list" => "/coins/list",
+    "/coins/markets" => "/coins/markets",
+    "/coins/%s" => "/coins/%s",
+    "/coins/%s/tickers" => "/coins/%s/tickers",
+    "/coins/%s/history" => "/coins/%s/history",
+    "/coins/%s/marketchart" => "/coins/%s/market_chart",
+    "/coins/%s/marketchart/range" => "/coins/%s/market_chart/range",
+    "/coins/%s/contract/%s" => "/coins/%s/contract/%s",
+    "/coins/%s/contract/%s/marketchart" => "/coins/%s/contract/%s/market_chart/",
+    "/coins/%s/contract/%s/marketchart/range" => "/coins/%s/contract/%s/market_chart/range",
+    "/coins/%s/ohlc" => "/coins/%s/ohlc",
+    "/coins/categories" => "/coins/categories",
+    "/coins/categories/list" => "/coins/categories/list",
+    "/assetplatforms" => "/asset_platforms",
+    "/exchanges" => "/exchanges",
+    "/exchanges/%s" => "/exchanges/%s",
+    "/exchanges/%s/tickers" => "/exchanges/%s/tickers",
+    "/exchanges/%s/volumechart" => "/exchanges/%s/volume_chart",
+    "/exchanges/list" => "/exchanges/list",
+    "/indexes" => "/indexes",
+    "/indexes/%s/%s" => "/indexes/%s/%s",
+    "/indexes/list" => "/indexes/list",
+    "/derivatives" => "/derivatives",
+    "/derivatives/exchanges" => "/derivatives/exchanges",
+    "/derivatives/exchanges/%s" => "/derivatives/exchanges/%s",
+    "/derivatives/exchanges/list" => "/derivatives/exchanges/list",
+    "/nfts/%s" => "/nfts/%s",
+    "/nfts/%s/contract/%s" => "/nfts/%s/contract/%s",
+    "/nfts/list" => "/nfts/list",
+    "/exchangerates" => "/exchange_rates",
+    "/search" => "/search",
+    "/search/trending" => "/search/trending",
+    "/global" => "/global",
+    "/global/decentralizedfinancedefi" => "/global/decentralized_finance_defi",
+    "/companies/publictreasury/%s" => "/companies/public_treasury/%s",
+  ];
+
+  public function __construct(
+    ApiClient $apiClient = null,
+    string $endpoint = "",
+    array $endpointParams = []
+  ) {
+    $this->apiClient = is_null($apiClient)? 
+      new ApiClient() : $apiClient;
+    $this->endpoint = $endpoint;
+    $this->endpointKey = strtolower($this->endpoint);
+    $this->endpointParams = $endpointParams;
+  }
+
+  public function __call($name, $arguments): CoinGeckoApiClient
+  {
+    $hasArguments = !empty($arguments);
+    $name = strtolower(str_replace("_", "", $name));
+    $this->endpoint .= '/'.$name;
+    if($hasArguments) {
+      $this->endpoint .= str_repeat('/%s', count($arguments));
+      $this->endpointParams = array_merge(
+        $this->endpointParams,
+        $arguments
+      );
+    }
+
+    $this->endpointKey = strtolower($this->endpoint);
+    return new CoinGeckoApiClient(
+      $this->apiClient,
+      $this->endpoint,
+      $this->endpointParams
+    );
+  }
+
+  public function getEndpointKey(): string
+  {
+    return $this->endpointKey;
+  }
+
+  public function send(ApiUrlBuilder $urlBuilder = null): array
+  {
+    if(empty($this->endpoint)) {
+      throw new \ParseError (
+        "[ERROR:-1] Undefined endpoint. Please form your endpoint first then send.",
+        -1
+      );
+    }
+
+    if(!$this->endpointExist()) {
+      throw new \ParseError (
+        "[ERROR:-2] Either the endpoint does not exist or " .
+        "\n         you are setting a value to a URI that does not require a parameter." .
+        "\n         Please check your URL. " . $this->endpoint,
+        -2
+      );
+    }
+
+    $this->apiClient = $this->apiClient->setUrl($this->getApiEndpoint());
+    if(!is_null($urlBuilder)) {
+      $this->apiClient = $this->apiClient->setUrlBuilder($urlBuilder);
+    }
+
+    return $this->apiClient->send();
+  }
+
+  public function get(): CoinGeckoApiClient
+  {
+    return new CoinGeckoApiClient($this->apiClient, "", []);
+  }
+
+  public function reset(): void
+  {
+    $this->endpointParams = [];
+    $this->endpoint = "";
+    $this->endpointKey = "";
+  }
+
+  private function endpointExist(): bool
+  {
+    return isset(self::API_ENPOINTS_MAP[$this->endpointKey]);
+  }
+
+  private function getApiEndpoint(): string
+  {
+    return vsprintf(
+      self::API_ENPOINTS_MAP[$this->endpointKey],
+      $this->endpointParams
+    );
+  }
+}

@@ -1,0 +1,69 @@
+{
+    "name": "pangzlab/coingecko-api",
+    "description": "CoinGecko API Client for PHP",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "support": {
+        "email": "pangz.lab@gmail.com",
+        "chat": "https://discordapp.com/users//585287860513669135",
+        "source": "https://github.com/pangz-lab/coingecko-api"
+    },
+    "keywords": [
+        "api",
+        "client",
+        "api client",
+        "coin",
+        "gecko",
+        "crypto",
+        "btc",
+        "verus",
+        "verus coin",
+        "vrsc",
+        "coingecko",
+        "coingecko api",
+        "coingecko api client"
+    ],
+    "funding": [
+        {
+            "type": "buymeacoffee",
+            "url": "https://www.buymeacoffee.com/pangzlab"
+        },
+        {
+            "type": "VerusID",
+            "url": "https://insight.verus.io/address/pangz@"
+        },
+        {
+            "type": "VerusCoin(VRSC)",
+            "url": "https://insight.verus.io/address/RNrhRTq8ioDTrANrm52c9MfFyPKr3cmhBj"
+        },
+        {
+            "type": "Bitcoin(BTC)",
+            "url": "https://btcscan.org/address/3MsmELpB8bsYvFJCYKrUpMuoBATVR5eeta"
+        },
+        {
+            "type": "Ethereum(ETH)",
+            "url": "https://ethplorer.io/address/0xa248d188725c3b78af7e7e8cf4cfb8469e46cf3b#"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PangzLab\\Coingecko\\": "src/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Pangz Lab",
+            "email": "pangz.lab@gmail.com"
+        }
+    ],
+    "minimum-stability": "beta",
+    "require-dev": {
+        "phpunit/phpunit": "^9"
+    }
+}
