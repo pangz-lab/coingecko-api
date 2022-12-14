@@ -114,8 +114,7 @@ class CoinGeckoApiClient
     CoinGeckoUrlBuilder $urlBuilder = null,
     bool $isProVersion = false
   ): array {
-    $baseUrl = self::COINGECKO_BASE_URL;
-    $endpoint = $this->getApiEndpoint();
+    
     if(empty($this->endpoint)) {
       throw new \ParseError (
         "[ERROR:-1] Undefined endpoint." .
@@ -147,8 +146,10 @@ class CoinGeckoApiClient
       $baseUrl = self::COINGECKO_BASE_URL_PRO;
     }
 
-    $this->apiClient = $this->apiClient
-      ->setUrl($baseUrl . $endpoint);
+    $baseUrl = self::COINGECKO_BASE_URL;
+    $endpoint = $this->getApiEndpoint();
+    $url = $baseUrl. $endpoint;
+    $this->apiClient = $this->apiClient->setUrl($url);
 
     if(!is_null($urlBuilder)) {
       $this->apiClient = $this->apiClient->setUrl(

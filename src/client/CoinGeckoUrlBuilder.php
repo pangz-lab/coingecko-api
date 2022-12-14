@@ -102,7 +102,10 @@ class CoinGeckoUrlBuilder
 
   private function isApiKeyParamExist(): bool
   {
-    return isset($this->buildKeyValuePair()['x_cg_pro_api_key']);
+    $pair = $this->buildKeyValuePair();
+    return (count($pair) > 0) ?
+      isset($pair['x_cg_pro_api_key']) :
+      false;
   }
 
   private function buildKeyValuePair(): array
