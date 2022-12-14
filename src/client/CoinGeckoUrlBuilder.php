@@ -10,6 +10,7 @@ class CoinGeckoUrlBuilder
   private $endpoint = "";
   const SETTER_PREFIX = 'with';
   const API_QUERY_PARAMS = [
+    "xcgproapikey" => "x_cg_pro_api_key",
     "id" => "id",
     "ids" => "ids",
     "vscurrencies" => "vs_currencies",
@@ -65,7 +66,10 @@ class CoinGeckoUrlBuilder
   {
     $sanitizedName = strtolower(str_replace("_", "", $name));
     $paramName = substr($sanitizedName, strlen(self::SETTER_PREFIX));
-    if(!str_starts_with($sanitizedName, self::SETTER_PREFIX) || !$this->paramExist($paramName)) {
+    if(
+      !str_starts_with($sanitizedName, self::SETTER_PREFIX)
+      || !$this->paramExist($paramName)
+    ) {
       throw new ParseError("Unknown method used. Setter name : $name", -1);
     }
 
@@ -86,7 +90,7 @@ class CoinGeckoUrlBuilder
   public function build(): string
   {
     $query = (!empty($this->parameterList)) ?
-      '?' . $this->buildKeyValuePair() :
+      '?' . $this->buildKeyValuePairQueryString() :
       '';
     return $this->endpoint . $query;
   }
@@ -96,13 +100,23 @@ class CoinGeckoUrlBuilder
     return new CoinGeckoUrlBuilder([], "");
   }
 
-  private function buildKeyValuePair(): string 
+  private function isApiKeyParamExist(): bool
+  {
+    return isset($this->buildKeyValuePair()['x_cg_pro_api_key']);
+  }
+
+  private function buildKeyValuePair(): array
   {
     $urlQuery = [];
     foreach($this->parameterList as $keyValue) {
       $urlQuery[$keyValue[0]] = $keyValue[0] . '=' . $keyValue[1];
     }
-    return implode('&', $urlQuery);
+    return $urlQuery;
+  }
+
+  private function buildKeyValuePairQueryString(): string 
+  {
+    return implode('&', $this->buildKeyValuePair());
   }
 
   private function paramExist($name): bool

@@ -54,6 +54,12 @@ class CoinGeckoApiClient
     "/global" => "/global",
     "/global/decentralizedfinancedefi" => "/global/decentralized_finance_defi",
     "/companies/publictreasury/%s" => "/companies/public_treasury/%s",
+    //PRO Version
+    "/nfts/markets" => "/nfts/markets",
+    "/nfts/%s/marketchart" => "/nfts/%s/market_chart",
+    "/nfts/%s/contract/%s/marketchart" => "/nfts/%s/contract/%s/market_chart",
+    "/nfts/%s/tickers" => "/nfts/%s/tickers",
+    "/global/marketcapchart" => "/global/market_cap_chart",
   ];
 
   public function __construct(
@@ -96,9 +102,24 @@ class CoinGeckoApiClient
 
   public function send(CoinGeckoUrlBuilder $urlBuilder = null): array
   {
+    return $this->sendSwitch($urlBuilder);
+  }
+
+  public function sendPro(CoinGeckoUrlBuilder $urlBuilder = null): array
+  {
+    return $this->sendSwitch($urlBuilder, true);
+  }
+
+  private function sendSwitch(
+    CoinGeckoUrlBuilder $urlBuilder = null,
+    bool $isProVersion = false
+  ): array {
+    $baseUrl = self::COINGECKO_BASE_URL;
+    $endpoint = $this->getApiEndpoint();
     if(empty($this->endpoint)) {
       throw new \ParseError (
-        "[ERROR:-1] Undefined endpoint. Please form your endpoint first then send.",
+        "[ERROR:-1] Undefined endpoint." .
+        "Please form your endpoint first then send.",
         -1
       );
     }
@@ -106,27 +127,41 @@ class CoinGeckoApiClient
     if(!$this->endpointExist()) {
       throw new \ParseError (
         "[ERROR:-2] Either the endpoint does not exist or " .
-        "\n         you are setting a value to a URI that does not require a parameter." .
-        "\n         Please check your URL. " . $this->endpoint,
+        "\n you are setting a value to a URI" .
+        "that does not require a parameter." .
+        "\n Please check your URL. " . $this->endpoint,
         -2
       );
     }
-    $endpoint = $this->getApiEndpoint();
 
-    $this->apiClient = $this->apiClient->setUrl(
-      self::COINGECKO_BASE_URL . $endpoint
-    );
+    if($isProVersion && !is_null($urlBuilder)) {
+      if(!$urlBuilder->isApiKeyParamExist()) {
+        throw new \ParseError (
+          "[ERROR:-3] It appears you want to use the pro version of the CoinGecko API. " .
+          "\nIf you believe this is correct, please set the API Key to proceed, ".
+          "\notherwise use the community API by using the send() method instead of sendPro()." .
+          $this->endpoint,
+          -2
+        );
+      }
+      $baseUrl = self::COINGECKO_BASE_URL_PRO;
+    }
+
+    $this->apiClient = $this->apiClient
+      ->setUrl($baseUrl . $endpoint);
 
     if(!is_null($urlBuilder)) {
       $this->apiClient = $this->apiClient->setUrl(
-        self::COINGECKO_BASE_URL . $endpoint . $urlBuilder->build()
+        $baseUrl .
+        $endpoint .
+        $urlBuilder->build()
       );
     }
-    print_r($this->apiClient->getUrl());
+
     return $this->apiClient->send();
   }
 
-  public function get(): CoinGeckoApiClient
+  public function set(): CoinGeckoApiClient
   {
     return new CoinGeckoApiClient($this->apiClient, "", []);
   }

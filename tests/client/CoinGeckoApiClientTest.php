@@ -374,7 +374,7 @@ class CoinGeckoApiClientTest extends TestCase
     $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
-    $request = $apiClient->get()->ping();
+    $request = $apiClient->set()->ping();
     $this->assertEquals($request->send(), $this->responsePayload);
     $this->assertEquals($request->send(), $this->responsePayload);
     $this->assertEquals($request->send(), $this->responsePayload);
@@ -396,45 +396,51 @@ class CoinGeckoApiClientTest extends TestCase
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
     $endpointResponse = [
-      $apiClient->get()->ping()->send(),
-      $apiClient->get()->simple()->price()->send(),
-      $apiClient->get()->simple()->tokenPrice("PARAM")->send(),
-      $apiClient->get()->simple()->supportedVsCurrencies()->send(),
-      $apiClient->get()->coins()->list()->send(),
-      $apiClient->get()->coins()->markets()->send(),
-      $apiClient->get()->coins("PARAM")->send(),
-      $apiClient->get()->coins("PARAM")->tickers()->send(),
-      $apiClient->get()->coins("PARAM")->history()->send(),
-      $apiClient->get()->coins("PARAM")->marketChart()->send(),
-      $apiClient->get()->coins("PARAM")->marketChart()->range()->send(),
-      $apiClient->get()->coins("PARAM")->contract("PARAM")->send(),
-      $apiClient->get()->coins("PARAM")->contract("PARAM")->marketChart()->send(),
-      $apiClient->get()->coins("PARAM")->contract("PARAM")->marketChart()->range()->send(),
-      $apiClient->get()->coins("PARAM")->ohlc()->send(),
-      $apiClient->get()->coins()->categories()->send(),
-      $apiClient->get()->coins()->categories()->list()->send(),
-      $apiClient->get()->assetPlatforms()->send(),
-      $apiClient->get()->exchanges()->send(),
-      $apiClient->get()->exchanges("PARAM")->send(),
-      $apiClient->get()->exchanges("PARAM")->tickers()->send(),
-      $apiClient->get()->exchanges("PARAM")->volumeChart()->send(),
-      $apiClient->get()->exchanges()->list()->send(),
-      $apiClient->get()->indexes()->send(),
-      $apiClient->get()->indexes("PARAM1", "PARAM2")->send(),
-      $apiClient->get()->indexes()->list()->send(),
-      $apiClient->get()->derivatives()->send(),
-      $apiClient->get()->derivatives()->exchanges()->send(),
-      $apiClient->get()->derivatives()->exchanges("PARAM")->send(),
-      $apiClient->get()->derivatives()->exchanges()->list()->send(),
-      $apiClient->get()->nfts("PARAM")->send(),
-      $apiClient->get()->nfts("PARAM")->contract("PARAM")->send(),
-      $apiClient->get()->nfts()->list()->send(),
-      $apiClient->get()->exchangeRates()->send(),
-      $apiClient->get()->search()->send(),
-      $apiClient->get()->search()->trending()->send(),
-      $apiClient->get()->global()->send(),
-      $apiClient->get()->global()->decentralizedFinanceDefi()->send(),
-      $apiClient->get()->companies()->publictreasury("PARAM")->send(),
+      $apiClient->set()->ping()->send(),
+      $apiClient->set()->simple()->price()->send(),
+      $apiClient->set()->simple()->tokenPrice("PARAM")->send(),
+      $apiClient->set()->simple()->supportedVsCurrencies()->send(),
+      $apiClient->set()->coins()->list()->send(),
+      $apiClient->set()->coins()->markets()->send(),
+      $apiClient->set()->coins("PARAM")->send(),
+      $apiClient->set()->coins("PARAM")->tickers()->send(),
+      $apiClient->set()->coins("PARAM")->history()->send(),
+      $apiClient->set()->coins("PARAM")->marketChart()->send(),
+      $apiClient->set()->coins("PARAM")->marketChart()->range()->send(),
+      $apiClient->set()->coins("PARAM")->contract("PARAM")->send(),
+      $apiClient->set()->coins("PARAM")->contract("PARAM")->marketChart()->send(),
+      $apiClient->set()->coins("PARAM")->contract("PARAM")->marketChart()->range()->send(),
+      $apiClient->set()->coins("PARAM")->ohlc()->send(),
+      $apiClient->set()->coins()->categories()->send(),
+      $apiClient->set()->coins()->categories()->list()->send(),
+      $apiClient->set()->assetPlatforms()->send(),
+      $apiClient->set()->exchanges()->send(),
+      $apiClient->set()->exchanges("PARAM")->send(),
+      $apiClient->set()->exchanges("PARAM")->tickers()->send(),
+      $apiClient->set()->exchanges("PARAM")->volumeChart()->send(),
+      $apiClient->set()->exchanges()->list()->send(),
+      $apiClient->set()->indexes()->send(),
+      $apiClient->set()->indexes("PARAM1", "PARAM2")->send(),
+      $apiClient->set()->indexes()->list()->send(),
+      $apiClient->set()->derivatives()->send(),
+      $apiClient->set()->derivatives()->exchanges()->send(),
+      $apiClient->set()->derivatives()->exchanges("PARAM")->send(),
+      $apiClient->set()->derivatives()->exchanges()->list()->send(),
+      $apiClient->set()->nfts("PARAM")->send(),
+      $apiClient->set()->nfts("PARAM")->contract("PARAM")->send(),
+      $apiClient->set()->nfts()->list()->send(),
+      $apiClient->set()->exchangeRates()->send(),
+      $apiClient->set()->search()->send(),
+      $apiClient->set()->search()->trending()->send(),
+      $apiClient->set()->global()->send(),
+      $apiClient->set()->global()->decentralizedFinanceDefi()->send(),
+      $apiClient->set()->companies()->publicTreasury("PARAM")->send(),
+      //PRO Version
+      $apiClient->set()->nfts()->markets()->send(),
+      $apiClient->set()->nfts("PARAM")->marketchart()->send(),
+      $apiClient->set()->nfts("PARAM")->contract("PARAM")->marketchart()->send(),
+      $apiClient->set()->nfts("PARAM")->tickers()->send(),
+      $apiClient->set()->global()->marketcapchart()->send(),
     ];
 
     foreach($endpointResponse as $currentEndpointResponse) {
@@ -454,12 +460,12 @@ class CoinGeckoApiClientTest extends TestCase
     $urlBuilder = new CoinGeckoUrlBuilder();
     $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
     $endpointRequest = [
-      $apiClient->get()->ping(),
-      $apiClient->get()->simple()->price(),
-      $apiClient->get()->simple()->tokenPrice("PARAM"),
-      $apiClient->get()->ping(),
-      $apiClient->get()->simple()->price(),
-      $apiClient->get()->simple()->tokenPrice("PARAM"),
+      $apiClient->set()->ping(),
+      $apiClient->set()->simple()->price(),
+      $apiClient->set()->simple()->tokenPrice("PARAM"),
+      $apiClient->set()->ping(),
+      $apiClient->set()->simple()->price(),
+      $apiClient->set()->simple()->tokenPrice("PARAM"),
     ];
 
     for($x = 0; $x < count($endpointRequest) ; $x++) {
