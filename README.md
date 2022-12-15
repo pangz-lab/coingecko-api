@@ -218,17 +218,17 @@ try {
 ```
 > <br>
 > 
-> ### Set Method
+> ## Set Method
 >
-> * Before forming the endpoint, always starting calling the **set()** method first
+> * Before forming the endpoint, always start calling the **set()** method first
 > to make a clean object before building a request.
 >
-> ### Parameter Positioning
+> ## Parameter Positioning
 >
-> * As you may have noticed, the parameter position is not important.
+> * You may have noticed, the parameter position is not important.
 > It can be set anywhere as long as it is required by the endpoint.
 >
-> ### Send Methods ( Community vs Pro )
+> ## Send Methods ( Community vs Pro )
 > * There are 2 methods provided to send a request. The **send()** and the **sendPro()**
 > * **send** ⇨ used to send a request to <a href="https://www.coingecko.com/en/api/documentation">Community API endpoints only</a>.
 > * **sendPro** ⇨ used to send a request to the exclusive <a href="https://coingeckoapi.notion.site/coingeckoapi/CoinGecko-Pro-API-exclusive-endpoints-529f4bb5c4d84d5fad797b09cfdb4b53">Pro API endpoints</a>.
