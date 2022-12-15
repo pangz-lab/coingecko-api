@@ -75,6 +75,12 @@ class CoinGeckoUrlBuilder
         return new CoinGeckoUrlBuilder($this->parameterList, $this->endpoint);
     }
 
+    /**
+     * Optionally receive an endpoint string to use
+     * 
+     * @param string $endpoint
+     * @return CoinGeckoUrlBuilder 
+     */
     public function setEndpoint(string $endpoint = ""): CoinGeckoUrlBuilder
     {
         $endpoint = (empty(trim($endpoint))) ? $this->endpoint : $endpoint;
@@ -84,6 +90,11 @@ class CoinGeckoUrlBuilder
         );
     }
 
+    /**
+     * Builds the URL query
+     * 
+     * @return string 
+     */
     public function build(): string
     {
         $query = (!empty($this->parameterList)) ?
@@ -92,11 +103,21 @@ class CoinGeckoUrlBuilder
         return $this->endpoint . $query;
     }
 
+    /**
+     * Initialize a CoinGeckoUrlBuilder object 
+     * 
+     * @return CoinGeckoUrlBuilder 
+     */
     public function clean(): CoinGeckoUrlBuilder
     {
         return new CoinGeckoUrlBuilder([], "");
     }
 
+    /**
+     * Checks if the API Key parameter is existing to be used for PRO endpoint
+     * 
+     * @return bool 
+     */
     public function apiKeyParamExist(): bool
     {
         $pair = $this->buildKeyValuePair();

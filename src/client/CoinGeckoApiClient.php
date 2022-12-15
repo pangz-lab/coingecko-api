@@ -74,6 +74,11 @@ class CoinGeckoApiClient
         $this->endpointParams = $endpointParams;
     }
 
+    /**
+     * Generic method caller to create an endpoint
+     * 
+     * @return CoinGeckoApiClient
+     */
     public function __call($name, $arguments): CoinGeckoApiClient
     {
         $hasArguments = !empty($arguments);
@@ -94,16 +99,57 @@ class CoinGeckoApiClient
         );
     }
 
+    /**
+     * Provides the endpoint key created
+     * 
+     * @return string
+     */
     public function getEndpointKey(): string
     {
         return $this->endpointKey;
     }
 
+    /**
+     * Initialize a CoinGeckoApiClient object
+     * 
+     * @return CoinGeckoApiClient
+     */
+    public function set(): CoinGeckoApiClient
+    {
+        return new CoinGeckoApiClient($this->apiClient, "", []);
+    }
+
+    /**
+     * Reset the object to ready for another request
+     * 
+     * @return void 
+     */
+    public function reset(): void
+    {
+        $this->endpointParams = [];
+        $this->endpoint = "";
+        $this->endpointKey = "";
+    }
+
+    /**
+     * Use to send a request to the CoinGecko Community endpoint
+     * 
+     * @throws ParseError|Exception|GuzzleHttp\Exception\RequestException
+     * @param CoinGeckoUrlBuilder $urlBuilder
+     * @return array 
+     */
     public function send(CoinGeckoUrlBuilder $urlBuilder = null): array
     {
         return $this->sendSwitch($urlBuilder);
     }
 
+    /**
+     * Use to send a request to the Pro Endpoint endpoint
+     * 
+     * @throws ParseError|Exception|GuzzleHttp\Exception\RequestException
+     * @param CoinGeckoUrlBuilder $urlBuilder
+     * @return array 
+     */
     public function sendPro(CoinGeckoUrlBuilder $urlBuilder = null): array
     {
         return $this->sendSwitch($urlBuilder, true);
@@ -157,18 +203,6 @@ class CoinGeckoApiClient
         }
 
         return $this->apiClient->send();
-    }
-
-    public function set(): CoinGeckoApiClient
-    {
-        return new CoinGeckoApiClient($this->apiClient, "", []);
-    }
-
-    public function reset(): void
-    {
-        $this->endpointParams = [];
-        $this->endpoint = "";
-        $this->endpointKey = "";
     }
 
     private function endpointExist(): bool
