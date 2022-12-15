@@ -16,6 +16,7 @@ use PangzLab\CoinGecko\Client\CoinGeckoApiClient;
 class CoinGeckoApiClientTest extends TestCase
 {
     protected $responsePayload;
+    protected $mockResponse;
     protected function setUp(): void
     {
         $this->responsePayload =  [
@@ -33,6 +34,22 @@ class CoinGeckoApiClientTest extends TestCase
             ],
         ];
     }
+
+    protected function setupMulitpleResponse(int $count, ?MockHandler $mock = null): MockHandler
+    {
+        $payload = json_encode($this->responsePayload);
+        if(is_null($mock)) {
+            $mock = new MockHandler([
+                new Response(200, [], $payload),
+            ]);
+        }
+
+        for ($i = 0; $i < $count; $i++) { 
+            $mock->append(new Response(200, [], $payload));
+        }
+        return $mock;
+    }
+
     public function testCanBuildTheEndpoint(): void
     {
         $apiClient = new CoinGeckoApiClient();
@@ -42,6 +59,134 @@ class CoinGeckoApiClientTest extends TestCase
         $apiClient->reset();
         $apiClient = $apiClient->simple()->price();
         $this->assertEquals($apiClient->getEndpointKey(), '/simple/price');
+    }
+
+    public function testCanBuildNewEndpointWhenResetIsCalled(): void
+    {
+        $apiClient = new CoinGeckoApiClient();
+        $apiClient = $apiClient->ping();
+        $this->assertEquals($apiClient->getEndpointKey(), '/ping');
+
+        $apiClient->reset();
+        $apiClient = $apiClient->simple()->price();
+        $this->assertEquals($apiClient->getEndpointKey(), '/simple/price');
+
+        $apiClient->reset();
+        $apiClient = $apiClient->coins()->markets();
+        $this->assertEquals($apiClient->getEndpointKey(), '/coins/markets');
+    }
+
+    public function testCanBuildNewEndpointWhenSetIsCalled(): void
+    {
+        $apiClient = new CoinGeckoApiClient();
+        $apiClient = $apiClient->set()->ping();
+        $this->assertEquals($apiClient->getEndpointKey(), '/ping');
+
+        $apiClient = $apiClient->set()->simple()->price();
+        $this->assertEquals($apiClient->getEndpointKey(), '/simple/price');
+
+        $apiClient = $apiClient->set()->coins()->markets();
+        $this->assertEquals($apiClient->getEndpointKey(), '/coins/markets');
+    }
+
+    public function testCanBuildNewEndpointWhenResetIsCalledAfterSend(): void
+    {
+        $mock = $this->setupMulitpleResponse(3);
+        $handlerStack = HandlerStack::create($mock);
+        $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
+        $urlBuilder = new CoinGeckoUrlBuilder();
+        $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
+
+        $apiClient = $apiClient->ping();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/ping');
+
+        $apiClient->reset();
+        $apiClient = $apiClient->simple()->price();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/simple/price');
+
+        $apiClient->reset();
+        $apiClient = $apiClient->coins()->markets();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/coins/markets');
+    }
+
+    public function testCanBuildNewEndpointWhenSetIsCalledAfterSend(): void
+    {
+        $mock = $this->setupMulitpleResponse(3);
+        $handlerStack = HandlerStack::create($mock);
+        $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
+        $urlBuilder = new CoinGeckoUrlBuilder();
+        $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
+
+        $apiClient = $apiClient->set()->ping();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/ping');
+
+        $apiClient = $apiClient->set()->simple()->price();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/simple/price');
+
+        $apiClient = $apiClient->set()->coins()->markets();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/coins/markets');
+    }
+
+    public function testCanBuildNewEndpointWhenResetIsCalledAfterMultipleSend(): void
+    {
+        $mock = $this->setupMulitpleResponse(9);
+        $handlerStack = HandlerStack::create($mock);
+        $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
+        $urlBuilder = new CoinGeckoUrlBuilder();
+        $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
+
+        $apiClient = $apiClient->ping();
+        $apiClient->send();
+        $apiClient->send();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/ping');
+
+        $apiClient->reset();
+        $apiClient = $apiClient->simple()->price();
+        $apiClient->send();
+        $apiClient->send();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/simple/price');
+
+        $apiClient->reset();
+        $apiClient = $apiClient->coins()->markets();
+        $apiClient->send();
+        $apiClient->send();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/coins/markets');
+    }
+
+    public function testCanBuildNewEndpointWhenSetIsCalledAfterMultipleSend(): void
+    {
+        $mock = $this->setupMulitpleResponse(9);
+        $handlerStack = HandlerStack::create($mock);
+        $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
+        $urlBuilder = new CoinGeckoUrlBuilder();
+        $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
+
+        $apiClient = $apiClient->set()->ping();
+        $apiClient->send();
+        $apiClient->send();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/ping');
+
+        $apiClient = $apiClient->set()->simple()->price();
+        $apiClient->send();
+        $apiClient->send();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/simple/price');
+
+        $apiClient = $apiClient->set()->coins()->markets();
+        $apiClient->send();
+        $apiClient->send();
+        $apiClient->send();
+        $this->assertEquals($apiClient->getEndpointKey(), '/coins/markets');
     }
 
     public function testCanBuildTheEndpointWithParameters(): void
@@ -255,22 +400,14 @@ class CoinGeckoApiClientTest extends TestCase
         $response = $apiClient
             ->coins("verus-coin")
             ->marketChart()
-            ->send(
-                $urlBuilder
-                    ->withDays(1)
-                    ->withVsCurrency("jpy")
-            );
+            ->send($urlBuilder->withDays(1)->withVsCurrency("jpy"));
         $this->assertEquals($response, $this->responsePayload);
 
         $apiClient->reset();
         $response = $apiClient
             ->coins("verus-coin")
             ->marketChart()
-            ->send(
-                $urlBuilder
-                    ->withDays(1)
-                    ->withVsCurrency("jpy")
-            );
+            ->send($urlBuilder->withDays(1)->withVsCurrency("jpy"));
         $this->assertEquals($response, []);
     }
 
@@ -279,12 +416,7 @@ class CoinGeckoApiClientTest extends TestCase
         $urlBuilder = new CoinGeckoUrlBuilder();
         $apiClient = new CoinGeckoApiClient();
         try {
-            $response = $apiClient
-                ->send(
-                    $urlBuilder
-                        ->withDays(1)
-                        ->withVsCurrency("jpy")
-                );
+            $apiClient->send($urlBuilder->withDays(1)->withVsCurrency("jpy"));
         } catch (\ParseError $e) {
             $this->assertEquals(
                 $e->getCode(),
@@ -300,20 +432,15 @@ class CoinGeckoApiClientTest extends TestCase
             new RequestException('Error Communicating with Server', new Request('GET', 'test'))
         ]);
         $handlerStack = HandlerStack::create($mock);
-        $httpClient = new Client(['handler' => $handlerStack]);
         $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
         $urlBuilder = new CoinGeckoUrlBuilder();
         $apiClient = new CoinGeckoApiClient(new ApiClient($urlBuilder->build(), $mockHttpClientHandler));
 
         try {
-            $response = $apiClient
+            $apiClient
                 ->coins("verus-coin")
                 ->marketChart()
-                ->send(
-                    $urlBuilder
-                        ->withDays(1)
-                        ->withVsCurrency("jpy")
-                );
+                ->send($urlBuilder->withDays(1)->withVsCurrency("jpy"));
         } catch (RequestException $e) {
             $this->assertEquals(
                 $e->getCode(),
@@ -326,11 +453,7 @@ class CoinGeckoApiClientTest extends TestCase
             $response = $apiClient
                 ->coins("verus-coin")
                 ->marketChart()
-                ->send(
-                    $urlBuilder
-                        ->withDays(1)
-                        ->withVsCurrency("jpy")
-                );
+                ->send($urlBuilder->withDays(1)->withVsCurrency("jpy"));
             $this->assertEquals($response, []);
         } catch (RequestException $e) {
             $this->assertEquals(
@@ -354,11 +477,7 @@ class CoinGeckoApiClientTest extends TestCase
             $response = $apiClient
                 ->coins("verus-coin")
                 ->marketChart()
-                ->send(
-                    $urlBuilder
-                        ->withDays(1)
-                        ->withVsCurrency("jpy")
-                );
+                ->send($urlBuilder->withDays(1)->withVsCurrency("jpy"));
             $this->assertEquals($response, []);
         } catch (RequestException $e) {
             $this->assertEquals(
@@ -370,13 +489,7 @@ class CoinGeckoApiClientTest extends TestCase
 
     public function testCanSendTheSameRequestMultipleTimes(): void
     {
-        $jsonResponse = json_encode($this->responsePayload);
-        $defaultResponse = new Response(200, ['X-Foo' => 'Bar'], json_encode($jsonResponse));
-        $mock = new MockHandler([
-            new Response(200, ['X-Foo' => 'Bar'], $jsonResponse),
-            new Response(200, ['X-Foo' => 'Bar'], $jsonResponse),
-            new Response(200, ['X-Foo' => 'Bar'], $jsonResponse),
-        ]);
+        $mock = $this->setupMulitpleResponse(3);
         $handlerStack = HandlerStack::create($mock);
         $mockHttpClientHandler = new Client(['handler' => $handlerStack]);
         $urlBuilder = new CoinGeckoUrlBuilder();
@@ -543,10 +656,8 @@ class CoinGeckoApiClientTest extends TestCase
             $apiClient->set()->simple()->price(),
             $apiClient->set()->simple()->tokenPrice("PARAM"),
         ];
-
-        for ($x = 0; $x < count($endpointRequest); $x++) {
-            $mock->append(new Response(200, ['X-Foo' => 'Bar'], $defaultResponse));
-        }
+        
+        $this->setupMulitpleResponse(count($endpointRequest), $mock);
 
         foreach ($endpointRequest as $currentRequest) {
             $res = $currentRequest->send();

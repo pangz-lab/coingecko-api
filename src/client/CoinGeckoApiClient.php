@@ -153,9 +153,7 @@ class CoinGeckoApiClient
 
         if (!is_null($urlBuilder)) {
             $this->apiClient = $this->apiClient->setUrl(
-                $baseUrl .
-                    $endpoint .
-                    $urlBuilder->build()
+                $baseUrl . $endpoint . $urlBuilder->build()
             );
         }
 
