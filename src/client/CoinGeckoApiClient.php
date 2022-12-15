@@ -86,8 +86,7 @@ class CoinGeckoApiClient
                 $arguments
             );
         }
-
-        $this->endpointKey = strtolower($this->endpoint);
+        
         return new CoinGeckoApiClient(
             $this->apiClient,
             $this->endpoint,
@@ -149,11 +148,11 @@ class CoinGeckoApiClient
 
         $endpoint = $this->getApiEndpoint();
         $url = $baseUrl . $endpoint;
-        $this->apiClient = $this->apiClient->setUrl($url);
+        $this->apiClient = $this->apiClient->setUrl($url);        
 
         if (!is_null($urlBuilder)) {
             $this->apiClient = $this->apiClient->setUrl(
-                $baseUrl . $endpoint . $urlBuilder->build()
+                $url . $urlBuilder->build()
             );
         }
 

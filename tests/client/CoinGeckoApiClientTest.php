@@ -188,7 +188,7 @@ class CoinGeckoApiClientTest extends TestCase
         $apiClient->send();
         $this->assertEquals($apiClient->getEndpointKey(), '/coins/markets');
     }
-
+    
     public function testCanBuildTheEndpointWithParameters(): void
     {
         $apiClient = new CoinGeckoApiClient();
@@ -203,7 +203,7 @@ class CoinGeckoApiClientTest extends TestCase
         $apiClient = $apiClient->indexes("PARAM1", "PARAM2")->tickers();
         $this->assertEquals($apiClient->getEndpointKey(), '/indexes/%s/%s/tickers');
     }
-
+    
     public function testCanBuildTheEndpointWithUriVariation(): void
     {
         $apiClient = new CoinGeckoApiClient();
@@ -258,7 +258,7 @@ class CoinGeckoApiClientTest extends TestCase
         $apiClient = $apiClient->simple()->supported_vs_currencies();
         $this->assertEquals($apiClient->getEndpointKey(), '/simple/supportedvscurrencies');
     }
-
+    
     public function testCanBuildTheEndpointWithUriVariationAndParameters(): void
     {
         $apiClient = new CoinGeckoApiClient();

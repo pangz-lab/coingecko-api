@@ -14,8 +14,6 @@ use PangzLab\CoinGecko\Client\CoinGeckoUrlBuilder;
 
 final class ApiClientTest extends TestCase
 {
-    const API_BASE_URL = "https://api.coingecko.com/api/";
-
     public function testCanGetTheURL(): void
     {
         $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
@@ -57,12 +55,7 @@ final class ApiClientTest extends TestCase
     {
         $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
         $client = new ApiClient($urlBuilder->build());
-        $client = $client
-            ->setUrlBuilder(
-                $urlBuilder
-                    ->withDays(7)
-                    ->withVsCurrency("jpy")
-            );
+        $client = $client->setUrlBuilder($urlBuilder->withDays(7)->withVsCurrency("jpy"));
 
         $this->assertEquals(
             $client->getUrl(),
@@ -71,12 +64,7 @@ final class ApiClientTest extends TestCase
 
         $urlBuilder = new CoinGeckoUrlBuilder([["days", "9999"], ["vs_currency", "usd"]], "/coins/verus-coin/market_chart");
         $client = new ApiClient($urlBuilder->build());
-        $client = $client
-            ->setUrlBuilder(
-                $urlBuilder
-                    ->withDays(7)
-                    ->withVsCurrency("jpy")
-            );
+        $client = $client->setUrlBuilder($urlBuilder->withDays(7)->withVsCurrency("jpy"));
 
         $this->assertEquals(
             $client->getUrl(),
@@ -109,21 +97,10 @@ final class ApiClientTest extends TestCase
 
         $urlBuilder = new CoinGeckoUrlBuilder([], "/coins/verus-coin/market_chart");
         $client = new ApiClient($urlBuilder->build(), $httpClient);
-        $response = $client
-            ->setUrlBuilder(
-                $urlBuilder
-                    ->withDays(1)
-                    ->withVsCurrency("jpy")
-            )
-            ->send();
+        $response = $client->setUrlBuilder($urlBuilder->withDays(1)->withVsCurrency("jpy"))->send();
         $this->assertEquals($response, $responsePayload);
 
-        $response = $client
-            ->setUrlBuilder(
-                $urlBuilder
-                    ->withDays(1)
-                    ->withVsCurrency("jpy")
-            )->send();
+        $response = $client->setUrlBuilder($urlBuilder->withDays(1)->withVsCurrency("jpy"))->send();
         $this->assertEquals($response, []);
     }
 
