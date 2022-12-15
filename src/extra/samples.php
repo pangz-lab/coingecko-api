@@ -140,6 +140,7 @@ try {
 
 } catch (\ParseError $e) {
     print("Invalid Command");
+    print($e->getMessage());
 } catch (RequestException $e) {
     print("Invalid Request");
     print($e->getMessage());

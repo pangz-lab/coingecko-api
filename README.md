@@ -148,6 +148,7 @@ Endpoint: [/coins/categoreis](https://www.coingecko.com/api/documentations/v3#/c
 
 use PangzLab\CoinGecko\Client\CoinGeckoApiClient;
 
+$q = new CoinGeckoUrlBuilder();
 $client = new CoinGeckoApiClient();
 
 try {
@@ -251,7 +252,7 @@ Bonus Quirks
 There are some benefits of using this CoinGecko client libray.
 <br>
 <br>
-Aside it's not required to learn any methods to use 
+Aside from it's not required to learn any methods to use 
 and the parameter positioning of each methods, 
 there are other features which might not be essential but are available and ready to be used
 to provide manageability and flexibility to your coding.

@@ -171,7 +171,7 @@ class CoinGeckoApiClient
         if (!$this->endpointExist()) {
             throw new \ParseError(
                 "[ERROR:-2] Either the endpoint does not exist or " .
-                    "\n you are setting a value to a URI" .
+                    "\n you are setting a value to a URI " .
                     "that does not require a parameter." .
                     "\n Please check your URL. " . $this->endpoint,
                 -2
