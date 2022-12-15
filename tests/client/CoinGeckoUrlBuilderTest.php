@@ -7,7 +7,6 @@ use PangzLab\CoinGecko\Client\CoinGeckoUrlBuilder;
 
 final class CoinGeckoUrlBuilderTest extends TestCase
 {
-    const API_BASE_URL = "https://api.coingecko.com/api/";
     public function testCanBuildUrl(): void
     {
         $urlBuilder = new CoinGeckoUrlBuilder();
