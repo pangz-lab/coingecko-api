@@ -5,7 +5,7 @@ namespace PangzLab\CoinGecko\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use PangzLab\CoinGecko\Client\CoinGeckoUrlBuilder;
-use PangzLab\Client\CoinGecko\Service\HttpClient;
+use PangzLab\CoinGecko\Service\HttpClient;
 
 class ApiClient
 {

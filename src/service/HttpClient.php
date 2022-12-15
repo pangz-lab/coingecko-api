@@ -1,6 +1,6 @@
 <?php
 
-namespace PangzLab\Client\CoinGecko\Service;
+namespace PangzLab\CoinGecko\Service;
 
 use GuzzleHttp\Client as Client;
 
