@@ -19,7 +19,7 @@ Requirements
 Installation
 ---------------
 <p>
-The best and the easiest way to use this library is thru the <a href="https://getcomposer.org/">composer</a>.
+The best and the easiest way to use this library is thru <a href="https://getcomposer.org/">composer</a>.
 You can also download the source directly and require it to your project.
 <br>
 <br>
@@ -60,17 +60,20 @@ Library
 ### [ Classes ]
 <p>
 This library provides 2 main classes which you can use depending on the type of endpoints you are accessing.
+<list>
+    <li>CoinGeckoUrlBuilder</li>
+    <li>CoinGeckoApiClient</li>
+</list>
 </p>
-- [x] CoinGeckoUrlBuilder
-- [x] CoinGeckoApiClient
-<br/>
+
+<br>
 
 #### 📦 CoinGeckoApiClient
 <p>
 This is the main class that allows building the API endpoints and sending the request.
 <br>
 <br>
-This is what you always need.
+This is always required.
 </p>
 
 ```php
@@ -85,15 +88,15 @@ $client = new CoinGeckoApiClient();
 #### 📦 CoinGeckoUrlBuilder
 <p>
 CoinGecko API endpoints require a URL query which is a set of key value pairs encoded in the URL.
-This class enables you to dynamically create them with ease without worrying about the position
-or the casing of the keys which is a common issue in most of the existing PHP libraries published.
+This class enables to dynamically create them with ease without worrying the position
+or the casing of the keys.
 <br>
 <br>
 Although by design can be achieved by using the CoinGeckoApiClient class alone,
 using the CoinGeckoUrlBuilder gives you a finer control over the parameters you set and more flexibility in managing the endpoints you're building.
 <br>
 <br>
-This class is optional depending on the URL endpoint you're sending the request.
+This class is optional depending on the endpoint you need.
 </p>
 
 ```php
@@ -116,7 +119,7 @@ Let's use some examples.
 <br>
 </p>
 
-#### 🔹 Request to endpoint "without"🚫 URL query
+#### 🔹 Endpoint request "without"🚫 URL query
 Endpoint: [/ping](https://www.coingecko.com/api/documentations/v3#/ping/get_ping)
 
 ```php
@@ -129,7 +132,7 @@ $client = new CoinGeckoApiClient();
 try {
     $response = $client->set()->ping()->send();
     print_r($response);
-    // do something to the response here
+    // do something here..
 
 } catch (Exception $e) {
     print($e->getMessage());
@@ -137,7 +140,7 @@ try {
 
 ```
 
-#### 🔹 Request to endpoint "with"✔️ URL query
+#### 🔹 Endpoint request "with"✔️ URL query
 Endpoint: [/coins/categoreis](https://www.coingecko.com/api/documentations/v3#/categories/get_coins_categories)
 
 ```php
@@ -153,7 +156,7 @@ try {
         ->categories()
         ->send($q->withOrder("name_desc"));
     print_r($response);
-    // do something to the response here
+    // do something here ...
 
 } catch (Exception $e) {
     print($e->getMessage());
@@ -161,7 +164,7 @@ try {
 
 ```
 
-#### 🔹 Request to endpoint with path parameter(id)
+#### 🔹 Endpoint request with path parameter(id)
 Endpoint: [/exchanges/{id}/volume_chart](https://www.coingecko.com/api/documentations/v3#/exchanges/get_exchanges__id__volume_chart)
 ```php
 <?php
@@ -178,7 +181,7 @@ try {
         ->volumeChart()
         ->send($q->withDays(1));
     print_r($response);
-    // do something to the response here
+    // do something here ...
 
 } catch (Exception $e) {
     print($e->getMessage());
@@ -186,7 +189,7 @@ try {
 
 ```
 
-#### 🔹 Request to endpoint with path parameter(id) and URL Query
+#### 🔹 Endpoint request with path parameter(id) and URL Query
 Endpoint: [/coins/{id}](https://www.coingecko.com/api/documentations/v3#/coins/get_coins__id_)
 ```php
 <?php
@@ -209,7 +212,7 @@ try {
             ->withTickers("true")
         );
     print_r($response);
-    // do something to the response here
+    // do something here ...
 
 } catch (Exception $e) {
     print($e->getMessage());
@@ -220,22 +223,22 @@ try {
 > 
 > ## Set Method
 >
-> * Before forming the endpoint, always start calling the **set()** method first
+> * Before forming the endpoint, always start calling the **set()** method 
 > to make a clean object before building a request.
 >
 > ## Parameter Positioning
 >
-> * You may have noticed, the parameter position is not important.
+> * The parameter position is not important.
 > It can be set anywhere as long as it is required by the endpoint.
 >
 > ## Send Methods ( Community vs Pro )
 > * There are 2 methods provided to send a request. The **send()** and the **sendPro()**
-> * **send** ⇨ used to send a request to <a href="https://www.coingecko.com/en/api/documentation">Community API endpoints only</a>.
+> * **send** ⇨ used to send a request to <a href="https://www.coingecko.com/en/api/documentation">Community API endpoints</a>.
 > * **sendPro** ⇨ used to send a request to the exclusive <a href="https://coingeckoapi.notion.site/coingeckoapi/CoinGecko-Pro-API-exclusive-endpoints-529f4bb5c4d84d5fad797b09cfdb4b53">Pro API endpoints</a>.
 > This method requires the **x_cg_pro_api_key** parameter key encoded in the URL for the request to be accepted.
 >
 > * Both optionally accepts instance of **CoinGeckoUrlBuilder()** class.
-> * Aside from the **x_cg_pro_api_key** paramter key, there is no major difference
+> * Aside from the **x_cg_pro_api_key** parameter key, there is no major difference
 > between these 2 methods. Both works the same way.
 >
 >
@@ -248,7 +251,7 @@ Bonus Quirks
 There are some benefits of using this CoinGecko client libray.
 <br>
 <br>
-Aside from you are not required to learn any methods to use 
+Aside it's not required to learn any methods to use 
 and the parameter positioning of each methods, 
 there are other features which might not be essential but are available and ready to be used
 to provide manageability and flexibility to your coding.
