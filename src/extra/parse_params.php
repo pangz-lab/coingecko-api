@@ -92,10 +92,20 @@ function createReadmeTable(array $apiDataArray): string {
         ];
     };
 
+    // $createSampleCode = function(string $endpointMethod = "", array $urlMethods = []) {
+    //     $clientObject = '$result = \$apiClient->set()->';
+    //     if(!isset($urlMethods[0])) {
+    //         return "<code><pre>$clientObject" . $endpointMethod . "->send();</pre></code>";
+    //     }
+    //     $space4s = "    ";
+    //     $urlQuery = '<br>' .$space4s.$space4s. '$q->' . implode('<br>'.$space4s.$space4s.'->', $urlMethods) ."<br>$space4s";
+    //     return "<code><pre>" . $clientObject . $endpointMethod . "<br>" . $space4s . "->send($urlQuery);</pre></code>";
+    // };
     $createSampleCode = function(string $endpointMethod = "", array $urlMethods = []) {
-        $clientObject = '$result = \$apiClient->set()->';
+        $clientObject = '```php $result = $apiClient->set()->';
         if(!isset($urlMethods[0])) {
-            return "<code><pre>$clientObject" . $endpointMethod . "->send();</pre></code>";
+            return "    $clientObject" . $endpointMethod . "->send();".
+            "```";
         }
         $space4s = "    ";
         $urlQuery = '<br>' .$space4s.$space4s. '$q->' . implode('<br>'.$space4s.$space4s.'->', $urlMethods) ."<br>$space4s";
