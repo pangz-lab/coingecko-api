@@ -77,7 +77,7 @@ function createReadmeTable(array $apiDataArray): string {
 
             $paramDesc[] =  "<li><code> " . 
                 $param['name'] . 
-                "</code> ➞  " .$param['type']. " <p> ◽️ ". 
+                "</code> ➞  " .$param['type']. (($param['required'])? '<i>required</i>' : ''). " <p> ◽️ ". 
                 $param['description']. 
                 "</p></li>";
         }
@@ -85,31 +85,25 @@ function createReadmeTable(array $apiDataArray): string {
             "methodParam" => $list,
             "codeUsageList" => $codeUsage,
             "methodParamDescCount" => $methodParamCount,
-            "methodParamDesc" => str_replace("\n","", "<details><summary>see description</summary>". 
+            "methodParamDesc" => str_replace("\n","", "<details><summary>show endpoint parameters</summary>". 
                 "<ol>" . implode("", $methodParamDesc) . "</ol></details>"),
-            "paramDesc" => str_replace("\n","","<details><summary>see description</summary>". 
+            "paramDesc" => str_replace("\n","","<details><summary>show url parameters</summary>". 
                 "<ol>" . implode("", $paramDesc) . "</ol></details>")
         ];
     };
 
-    // $createSampleCode = function(string $endpointMethod = "", array $urlMethods = []) {
-    //     $clientObject = '$result = \$apiClient->set()->';
-    //     if(!isset($urlMethods[0])) {
-    //         return "<code><pre>$clientObject" . $endpointMethod . "->send();</pre></code>";
-    //     }
-    //     $space4s = "    ";
-    //     $urlQuery = '<br>' .$space4s.$space4s. '$q->' . implode('<br>'.$space4s.$space4s.'->', $urlMethods) ."<br>$space4s";
-    //     return "<code><pre>" . $clientObject . $endpointMethod . "<br>" . $space4s . "->send($urlQuery);</pre></code>";
-    // };
     $createSampleCode = function(string $endpointMethod = "", array $urlMethods = []) {
-        $clientObject = '```php $result = $apiClient->set()->';
+        $clientObject = '$result = $apiClient->set()->';
         if(!isset($urlMethods[0])) {
-            return "    $clientObject" . $endpointMethod . "->send();".
-            "```";
+            return "$clientObject" . $endpointMethod . "->send();";
         }
         $space4s = "    ";
-        $urlQuery = '<br>' .$space4s.$space4s. '$q->' . implode('<br>'.$space4s.$space4s.'->', $urlMethods) ."<br>$space4s";
-        return "<code><pre>" . $clientObject . $endpointMethod . "<br>" . $space4s . "->send($urlQuery);</pre></code>";
+        $urlQuery = '
+            $q->' . implode('
+        '.$space4s.$space4s.'->', $urlMethods) ."";
+        return "" . $clientObject . $endpointMethod . "
+        " . "->send($urlQuery
+        );";
     };
 
     $table = "";
@@ -117,7 +111,9 @@ function createReadmeTable(array $apiDataArray): string {
     $linkId = "";
     $endpointCtr = 0;
     $endpointTableOfContentItem = "";
-    $tableHeader = "\n\n# <h2 id='%s'>_WW_ %s </h2>\n| ENDPOINT <a href='#table-of-contents'>_TT_</a>| |\n|---:|:---|\n";
+    $enpointTitle = "<a href='#table-of-contents'>_TT_</a> endpoint : ";
+    // $tableHeader = "\n\n# <h2 id='%s'>_WW_ %s </h2>\n| ENDPOINT <a href='#table-of-contents'>_TT_</a>| |\n|---:|:---|\n";
+    $tableHeader = "\n\n\n\n# <h2 id='%s'>_WW_ %s </h2>\n <br>";
 
     foreach ($apiDataArray["paths"] as $endpoint => $currentPath) {
         if($currentPath["get"]["tags"][0] != $lastTag) {
@@ -131,20 +127,18 @@ function createReadmeTable(array $apiDataArray): string {
         }
         
         $endpointCtr++;
-        $endpointDescription = "<br><br><blockquotes>" . 
+        $endpointDescription = "\n\n\n>\n>" . 
             $currentPath["get"]["summary"] .
-            "<blockquotes><br><br>";
+            "\n>\n\n";
+
         $endpointMethod = $createEndpointMethod($endpoint);
         if (
             !isset($currentPath["get"]["parameters"]) 
             || empty($currentPath["get"]["parameters"])
         ) {
-            $table .= "| <b>$endpointCtr.</b>   | `$endpoint`  |\n";
-            $table .= "|                        | <code>" . 
-                $endpointMethod . 
-                "</code> $endpointDescription |\n";
-            $table .= "| <i>sample</i> | " . $createSampleCode($endpointMethod, []) . 
-                "|\n";
+            $table .= "<b>$endpointCtr.</b> $enpointTitle `$endpoint`\n$endpointDescription\n";
+            $table .= "   \n[ method ] : <br>`" . $endpointMethod . "` \n\n";
+            $table .= "<i>_BB_ sample usage</i>\n\n```php\n" . $createSampleCode($endpointMethod, []) ."\n```\n<br>";
             continue;
         }
 
@@ -157,20 +151,19 @@ function createReadmeTable(array $apiDataArray): string {
             ($params['methodParamDescCount'] > 0 ? $params['methodParamDesc']  : '');
 
         $parameterDetail = ($paramsCount > 0) ? (
-            "<i>URL Keys</i> : $paramsCount<br><br>" . 
+            "\n<i>URL Keys</i> : $paramsCount<br>" . 
             implode("<br>", $paramFormatted) .
             "<br><br>" . $params["paramDesc"]
         )  : '';
 
-        $table .= "| <b>$endpointCtr.<b>   | `$endpoint` |\n";
-        $table .= "|                       | <code>" . $createEndpointMethod($endpoint) . "</code> $endpointParamDesc |\n";
+        $table .= "<b>$endpointCtr.</b> $enpointTitle `$endpoint`\n$endpointParamDesc\n";
+        $table .= "   \n[ method ] : <br>`" . $endpointMethod . "`\n\n";
         
         if(!empty(trim($parameterDetail))) {
-            $table .= "|                  | $parameterDetail |\n";
+            $table .= "🗝 $parameterDetail <br>";
         }
 
-        $table .= "| <i>sample</i> |".
-            $createSampleCode($endpointMethod, $params['codeUsageList']) . "|\n";
+        $table .= "<i>_BB_ sample usage</i>\n\n```php\n". $createSampleCode($endpointMethod, $params['codeUsageList']) . "\n```\n<br>";
     }
 
     $table = "\n\n<h1 id='table-of-contents'> _TT_Endpoint List</h1>\n\n<ol>". 
