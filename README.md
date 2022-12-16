@@ -120,7 +120,7 @@ Let's use some examples.
 </p>
 
 #### 🔹 Endpoint request "without"🚫 URL query
-Endpoint: [/ping](https://www.coingecko.com/api/documentations/v3#/ping/get_ping)
+🌐 endpoint: [/ping](https://www.coingecko.com/api/documentations/v3#/ping/get_ping)
 
 ```php
 <?php
@@ -141,11 +141,12 @@ try {
 ```
 
 #### 🔹 Endpoint request "with"✔️ URL query
-Endpoint: [/coins/categoreis](https://www.coingecko.com/api/documentations/v3#/categories/get_coins_categories)
+🌐 endpoint: [/coins/categoreis](https://www.coingecko.com/api/documentations/v3#/categories/get_coins_categories)
 
 ```php
 <?php
 
+use PangzLab\CoinGecko\Client\CoinGeckoApiClient;
 use PangzLab\CoinGecko\Client\CoinGeckoApiClient;
 
 $q = new CoinGeckoUrlBuilder();
@@ -166,7 +167,7 @@ try {
 ```
 
 #### 🔹 Endpoint request with path parameter(id)
-Endpoint: [/exchanges/{id}/volume_chart](https://www.coingecko.com/api/documentations/v3#/exchanges/get_exchanges__id__volume_chart)
+🌐 endpoint: [/exchanges/{id}/volume_chart](https://www.coingecko.com/api/documentations/v3#/exchanges/get_exchanges__id__volume_chart)
 ```php
 <?php
 
@@ -191,7 +192,7 @@ try {
 ```
 
 #### 🔹 Endpoint request with path parameter(id) and URL Query
-Endpoint: [/coins/{id}](https://www.coingecko.com/api/documentations/v3#/coins/get_coins__id_)
+🌐 endpoint: [/coins/{id}](https://www.coingecko.com/api/documentations/v3#/coins/get_coins__id_)
 ```php
 <?php
 
@@ -220,6 +221,10 @@ try {
 }
 
 ```
+
+Features
+---------------
+
 > <br>
 > 
 > ## Set Method
@@ -240,9 +245,15 @@ try {
 >
 > * Both optionally accepts instance of **CoinGeckoUrlBuilder()** class.
 > * Aside from the **x_cg_pro_api_key** parameter key, there is no major difference
-> between these 2 methods. Both works the same way.
+> between these 2 methods. Both are used the same way.
 >
+> ## CoinGeckoUrlBuilder() Method Call **with** Prefix
+> * Method name for building a query string using **CoinGeckoUrlBuilder()** always
+> have a prefix **with**.
 >
+>> (i.e. withId() for id, withVsCurrency() for vs_currency)
+>
+> <br>
 
 <br>
 
@@ -258,7 +269,10 @@ there are other features which might not be essential but are available and read
 to provide manageability and flexibility to your coding.
 </p>
 
-#### 1. Sending by calling reset() instead of set()
+#### 1. Use of reset() instead of set()
+> ⚠️ Calling **set()** is always the preferred way but 
+> you can also build request using the **reset()** method to cleanup resource. Just make sure to separate
+> the call to **send()** method to avoid **ParseError**.
 ```php
 <?php
 
@@ -269,26 +283,26 @@ $q = new CoinGeckoUrlBuilder();
 $client = new CoinGeckoApiClient();
 
 try {
-    //No set() method called here
-    $response = $apiClient
-        ->coins("verus-coin")
-        ->send(
-            $q->withLocalization("false")
-            ->withDeveloperData("true")
-            ->withSparkline("true")
-            ->withCommunityData("true")
-            ->withMarketData("true")
-            ->withTickers("true")
-        );
+    //No set() method and no send() call
+    $apiClient = $apiClient->coins("verus-coin");
+    //Separate the call to send
+    $response = $apiClient->send(
+        $q->withLocalization("false")
+        ->withDeveloperData("true")
+        ->withSparkline("true")
+        ->withCommunityData("true")
+        ->withMarketData("true")
+        ->withTickers("true")
+    );
     print_r($response);
 
     //Call reset() method to form another request
     $apiClient->reset();
-    //Do another call
-    $response = $apiClient
-        ->exchanges("safe_trade")
-        ->volumeChart()
-        ->send($q->withDays(1));
+    $apiClient = $apiClient->exchanges("safe_trade")
+        ->volumeChart();
+    $response = $apiClient->send($q->withDays(1));
+    //Call reset() for the next calls
+    $apiClient->reset();
     print_r($response);
 
 } catch (Exception $e) {
@@ -297,8 +311,15 @@ try {
 
 ```
 
-#### 2. Insensitive method name and parameter keys
-> ⚠️ Only underscore(_) character is allowed
+#### 2. Case-insensitive method names
+> <br>
+> 
+> Endpoint name and URL parameter key name are case-insensitive.
+> This means calling ping(), PING() and Ping() are treated the same thing.
+> Additionally you can also use underscore(_) as a separator for names
+> like VS_CURRENCY or vs_Currency. They will be handled properly.
+> 
+> <br>
 ```php
 <?php
 

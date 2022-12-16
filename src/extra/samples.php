@@ -71,10 +71,10 @@ try {
     print_r($response);
 
     //================================//
-    //No set() method
-    $response = $apiClient
-    ->coins("verus-coin")
-    ->send(
+    //No set() method and no send() call
+    $apiClient = $apiClient->coins("verus-coin");
+    //Separate the call to send
+    $response = $apiClient->send(
         $q->withLocalization("false")
         ->withDeveloperData("true")
         ->withSparkline("true")
@@ -86,10 +86,11 @@ try {
 
     //Call reset() method to form another request
     $apiClient->reset();
-    $response = $apiClient
-        ->exchanges("safe_trade")
-        ->volumeChart()
-        ->send($q->withDays(1));
+    $apiClient = $apiClient->exchanges("safe_trade")
+        ->volumeChart();
+    $response = $apiClient->send($q->withDays(1));
+    //Call reset() for the next calls
+    $apiClient->reset();
     print_r($response);
     
     //================================//
