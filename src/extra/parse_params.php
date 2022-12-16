@@ -85,9 +85,9 @@ function createReadmeTable(array $apiDataArray): string {
             "methodParam" => $list,
             "codeUsageList" => $codeUsage,
             "methodParamDescCount" => $methodParamCount,
-            "methodParamDesc" => str_replace("\n","", "<details><summary>show endpoint parameters</summary>". 
+            "methodParamDesc" => str_replace("\n","", "<details><summary>endpoint parameters</summary>". 
                 "<ol>" . implode("", $methodParamDesc) . "</ol></details>"),
-            "paramDesc" => str_replace("\n","","<details><summary>show url parameters</summary>". 
+            "paramDesc" => str_replace("\n","","<details><summary>url parameters</summary>". 
                 "<ol>" . implode("", $paramDesc) . "</ol></details>")
         ];
     };
@@ -99,8 +99,8 @@ function createReadmeTable(array $apiDataArray): string {
         }
         $space4s = "    ";
         $urlQuery = '
-            $q->' . implode("
-            "."->", $urlMethods) ."";
+            $q->' . implode('
+        '.$space4s.$space4s.'->', $urlMethods) ."";
         return "" . $clientObject . $endpointMethod . "
         " . "->send($urlQuery
         );";
@@ -137,7 +137,7 @@ function createReadmeTable(array $apiDataArray): string {
             || empty($currentPath["get"]["parameters"])
         ) {
             $table .= "<b>$endpointCtr.</b> $enpointTitle `$endpoint`\n$endpointDescription\n";
-            $table .= "<br><br>\n   <b>[ method ]</b> : <br>`" . $endpointMethod . "` \n\n";
+            $table .= "   \n\n[ method ] : <br>`" . $endpointMethod . "` \n\n";
             $table .= "<i>_BB_ sample usage</i>\n\n```php\n" . $createSampleCode($endpointMethod, []) ."\n```\n<br>";
             continue;
         }
@@ -157,7 +157,7 @@ function createReadmeTable(array $apiDataArray): string {
         )  : '';
 
         $table .= "<b>$endpointCtr.</b> $enpointTitle `$endpoint`\n$endpointParamDesc\n";
-        $table .= "<br><br>\n   <b>[ method ]</b> : <br>`" . $endpointMethod . "`\n\n";
+        $table .= "   \n\n[ method ] : <br>`" . $endpointMethod . "`\n\n";
         
         if(!empty(trim($parameterDetail))) {
             $table .= "🗝 $parameterDetail <br>";
@@ -175,5 +175,5 @@ function createReadmeTable(array $apiDataArray): string {
 
 //Run in smallest font term
 //replace the broken emojis
-//📋🌐🔑💡
+// 📋🌐💡🔑
 print(createReadmeTable($api));
