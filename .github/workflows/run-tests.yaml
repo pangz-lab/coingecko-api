@@ -22,6 +22,10 @@ jobs:
         ini-values: post_max_size=256M, max_execution_time=180
         coverage: xdebug
         tools: phpunit:${{ matrix.phpunit-versions }}
+    - name: Installing Dependency
+      run: composer install --prefer-dist
+    - name: Running Test
+      run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
   # check-compatibility-for-php80:
   #   runs-on: ubuntu-latest
   #   steps:
