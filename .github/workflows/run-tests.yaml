@@ -9,8 +9,9 @@ jobs:
       - uses: php-actions/composer@v6
         with:
           php_version: "7.3"
+          version: "2.2.x"
       - run: composer update
-      - run: ./vendor/bin/phpunit --colors tests
+      - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
   check-compatibility-for-php82:
     runs-on: ubuntu-latest
     steps:
@@ -18,4 +19,5 @@ jobs:
       - uses: php-actions/composer@v6
         with:
           php_version: "8.0"
-      - run: ./vendor/bin/phpunit --colors tests
+          version: "2.2.x"
+      - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
