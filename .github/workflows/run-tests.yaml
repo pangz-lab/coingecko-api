@@ -8,7 +8,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: php-actions/composer@v6
         with:
-          php_version: "7.5"
+          php_version: "7.4"
           version: "2.2.x"
       - run: composer update
       - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
