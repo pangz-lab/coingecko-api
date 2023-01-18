@@ -1,9 +1,9 @@
 {
     "name": "pangzlab/coingecko-api",
-    "description": "CoinGecko API Client for PHP",
+    "description": "CoinGecko Rest API Client for PHP",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^7.5"
+        "guzzlehttp/guzzle": "7.0"
     },
     "support": {
         "email": "pangz.lab@gmail.com",
