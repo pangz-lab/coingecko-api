@@ -159,11 +159,11 @@ function createReadmeTable(array $apiDataArray): string {
         $table .= "<b>$endpointCtr.</b> $enpointTitle `$endpoint`\n$endpointParamDesc\n";
         $table .= "   \n\n[ method ] : <br>`" . $endpointMethod . "`\n\n";
         
+        
+        $table .= "<i>_BB_ sample usage</i>\n\n```php\n". $createSampleCode($endpointMethod, $params['codeUsageList']) . "\n```\n<br>";
         if(!empty(trim($parameterDetail))) {
             $table .= "🗝 $parameterDetail <br>";
         }
-
-        $table .= "<i>_BB_ sample usage</i>\n\n```php\n". $createSampleCode($endpointMethod, $params['codeUsageList']) . "\n```\n<br>";
     }
 
     $table = "\n\n<h1 id='table-of-contents'> _TT_Endpoint List</h1>\n\n<ol>". 
