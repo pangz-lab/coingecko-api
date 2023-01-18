@@ -23,7 +23,7 @@ jobs:
         coverage: xdebug
         tools: phpunit:${{ matrix.phpunit-versions }}
     - name: Installing Dependency
-      run: composer install --prefer-dist
+      run: composer install
     - name: Running Test
       run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
   # check-compatibility-for-php80:
