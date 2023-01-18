@@ -24,7 +24,7 @@ jobs:
     # - name: Check Directory
     #   run: cd /home/runner/work/_temp/
     - name: Installing Dependency
-      run: cd /home/runner/work/_temp/ && composer install
+      run: cd ../ && composer install
     - name: Running Test
       run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
   # check-compatibility-for-php80:
