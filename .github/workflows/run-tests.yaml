@@ -2,22 +2,42 @@ name: run-tests
 run-name: ${{ github.actor }} is running the tests
 on: [push]
 jobs:
-  check-compatibility-for-php80:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: php-actions/composer@v6
+  run:
+    runs-on: ${{ matrix.operating-system }}
+      strategy:
+        matrix:
+          operating-system: ['ubuntu-latest', 'windows-latest', 'macos-latest']
+          php-versions: ['8.0', '8.1', '8.2']
+          phpunit-versions: ['latest']
+          include:
+          - operating-system: 'ubuntu-latest'
+            php-versions: '7.2'
+            phpunit-versions: '9.5.28'
+      steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php_version: "8.0"
-          version: "2.2.x"
-      - run: composer update
-      - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
-  check-compatibility-for-php82:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: php-actions/composer@v6
-        with:
-          php_version: "8.2"
-          version: "2.2.x"
-      - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: phpunit:${{ matrix.phpunit-versions }}
+  # check-compatibility-for-php80:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: shivammathur/setup-php@v2
+  #       with:
+  #         php_versions: ["8.0", "8.2"]
+  #         tools: composer:v2
+  #     - run: composer update
+  #     - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
+  # check-compatibility-for-php82:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # - uses: actions/checkout@v3
+  #     # - uses: php-actions/composer@v6
+  #     - uses: shivammathur/setup-php@v2
+  #       with:
+  #         php_version: "8.2"
+  #         version: "2.2.x"
+  #     - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
