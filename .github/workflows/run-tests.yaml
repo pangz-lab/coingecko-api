@@ -2,13 +2,13 @@ name: run-tests
 run-name: ${{ github.actor }} is running the tests
 on: [push]
 jobs:
-  check-compatibility-for-php73:
+  check-compatibility-for-php80:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: php-actions/composer@v6
         with:
-          php_version: "7.4"
+          php_version: "8.0"
           version: "2.2.x"
       - run: composer update
       - run: ./vendor/bin/phpunit --colors tests --do-not-cache-result
