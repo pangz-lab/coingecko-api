@@ -9,6 +9,7 @@ jobs:
       - uses: php-actions/composer@v6
         with:
           php_version: "7.3"
+      - run: composer update
       - run: chmod +x run_test.sh
       - run: ./run_test.sh
   check-compatibility-for-php82:
