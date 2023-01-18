@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is running the tests
 on: [push]
 jobs:
   run:
-    runs-on: ${{ matrix.operating-system }}
+    runs-on:
       strategy:
         matrix:
           operating-system: ['ubuntu-latest', 'windows-latest', 'macos-latest']
