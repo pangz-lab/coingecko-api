@@ -10,14 +10,12 @@ jobs:
         with:
           php_version: "7.3"
       - run: composer update
-      - run: chmod +x run_test.sh
-      - run: ./run_test.sh
+      - run: ./vendor/bin/phpunit --colors tests
   check-compatibility-for-php82:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: php-actions/composer@v6
         with:
-          php_version: "8.2"
-      - run: chmod +x run_test.sh
-      - run: ./run_test.sh
+          php_version: "8.0"
+      - run: ./vendor/bin/phpunit --colors tests
