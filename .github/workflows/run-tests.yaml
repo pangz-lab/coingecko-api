@@ -23,7 +23,7 @@ jobs:
         coverage: xdebug
         tools: phpunit:${{ matrix.phpunit-versions }}
     - name: Check Directory
-      run: ls -l
+      run: cd ../
     - name: Installing Dependency
       run: composer install
     - name: Running Test
