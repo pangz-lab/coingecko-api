@@ -1,3 +1,21 @@
+<a href="https://discord.gg/TK3WHBMk">
+    <img src="https://img.shields.io/discord/1104687758301204512?logo=discord" alt="chat on Discord">
+</a>
+<a href="https://twitter.com/intent/follow?screen_name=Pangz55192569">
+    <img src="https://img.shields.io/twitter/follow/Pangz55192569?style=social&logo=twitter" alt="follow on witter">
+</a>
+
+<p align="center">
+    <img src="https://lh3.googleusercontent.com/fife/APg5EOY3h1MG5I3ny2d3X9NITN9GNuyx8uPlEu50W6GhYw-CsCPY7h_8DN1l9uYw8J7YjmUl9pDhuUhv6yrh5gv9jENoaWQcPebQ4NcsweTAtsFB2ehWWa9ETrSWCLoRTEVax27GsKGKVB6lLYNN1776Mytpv0RlNXgsnA-1eP30YQopud2cqf0YOTudo-heagG4oieBKBGr2A4ChIrQ5t0UglNYpmz8Q_F57k9mdq8hrBzuDmyUhdFI40tFZtg_vUKIZTY_vd2BIJmGkZZ3nuMMyZbOOMhgSTMxzlpb3dA23Gd2ymBGfNobQZOa4hBOpd_XxibFox5EOQOd9XpSbhdPt0EIAzXEb4qVsMJ4_NMW7OEdk0JQAjaAsFzZvVYL-uKFu-vzWSFg_GRWteDkUUYhv60V1H2zrmAfDdN10lE5Y9aiMbyc-62XSzaCtGBwSmmfP8iCdMP_RsJquvqWHJTEHKW6mIC8BXbMqDu8ieTsUqc8veRBfHRgn1iA1lUywABUELyAANMCqZ450v6nDYOCiRXFVeIh9-O3G9PzGgYu7V0o7MSDBhL-3Y0kENycsIqzvnPSBQX38BOKgP77in8aXU9uBzS275CDoeCValoNwx2pZOXVmLFk7y_yBHArm3VD7ctfwP_NzOkC84zNcn2QVycgmBdsXlULj_Q-POX2W_LM7T4TxLQkoAn5B4SvBikTN-Le_Ge2WkQkIcA7U3_j8GUywRSYXr8m78xeZODWi9zJEFUfc8zYt-19PYcrx0YFSivwOqOxpIm-IEm6x4vyapjB-7X-ljxc2TzeWqOShXkyl5gKK0Evd-0U6hTVN_mL_uPWAlvWLs3LCKu9IZ5bVDEmJVtBspEhxdrjQQjNqur01g4VMy3Yy_KhNientu_AJm7ndNAeAQAoKfgiUtQNrtY306648slrRdKDOt5nTLWiHUWvXcUqh6u5KyTI1YNBneHQyWk2ExhxIUFPAi2QUnzeu21IBKUoele9BDGKEoOz4dV3J1qgi0-7C1kvvWtoxxnL5z-9LSwtAEW1vaw5iEy3yhAcbN9nrKtEC0O75e3XHR2eXt4NKxBF7dgdWX9lS_llslIsvw3rFx9VOLfcCM71HTCO3tczlf8abxHg1R6TlKWOGfqaYOBdqIRqPPF1sagLZvbe75uIjRbnCwBaRtVl4Z1s7Q30I_8Jeq2oJRCnYQcgbjpXRvpClEfhlJT76ybo9hT2aG_QFE01SwptYQ2A-btnwo9jimH0hc4vIQXR1_pMFHQa62rd2hSiTla5qo95WqTQWoVtbW55hN2h7LTF4IBm1ETYo81KFpM1HTzYR7LZQOQMs2_BaUaCQBetOmIWZKhLWRZC8_X3OVSRokTj6xuXtotwcHbXln661ITXs-1yCxdgWmpIL92mPjMlljMUA_kQJru0s_lm-DEqdZaFqmuj4fdNqGjZuEN1-FQgVRd-coSHPKd4F2RY2djuATNBtQU5nIwWgm-tuXM6YHX3KzliOp1glQzUURkKVaUq3-lxgfhY4IxRBgmHrw=w1862-h968"
+    height="165" />
+</p>
+<p>
+    <img src="https://pangz-lab.github.io/coupons/coingecko-cgpangz2402-coupon.png" height="500" />
+    <a href="https://www.coingecko.com/en/api">
+        <img src="https://pangz-lab.github.io/coupons/cgpangz2402-coupon-usage.png" height="500" />
+    </a>
+</p>
+
 # coingecko-api
 ## Coingecko API client for PHP
 <br>
